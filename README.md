@@ -4,13 +4,13 @@ A small, dependency-free application used in MIS 4173 to practice building softw
 
 ## What the starter application does
 
-- Captures requester, department, equipment, needed date, and business reason.
+- Captures requester, department, equipment, priority, needed date, and business reason.
 - Validates required fields.
 - Stores requests in the browser using `localStorage`.
 - Displays the newest requests first.
 - Includes automated tests for validation and storage logic.
 
-The starter is intentionally incomplete. It does **not** include priority, filtering, a feature specification, or a custom review Skill. Students add those capabilities during Exercises 5–7.
+The starter is intentionally incomplete. It does **not** include filtering, a feature specification, or a custom review Skill. Students add those capabilities during Exercises 5–7.
 
 ## Run the application
 

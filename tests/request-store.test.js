@@ -14,6 +14,7 @@ const validInput = {
   requester: "  Jordan Lee  ",
   department: "Operations",
   equipment: "  Laptop  ",
+  priority: "High",
   neededBy: "2026-09-15",
   reason: "  Replace a failed field computer.  ",
 };
@@ -41,6 +42,7 @@ test("createRequest trims input and adds system fields", () => {
     requester: "Jordan Lee",
     department: "Operations",
     equipment: "Laptop",
+    priority: "High",
     neededBy: "2026-09-15",
     reason: "Replace a failed field computer.",
     createdAt: "2026-08-17T12:00:00.000Z",
@@ -49,10 +51,10 @@ test("createRequest trims input and adds system fields", () => {
 
 test("createRequest reports missing required fields", () => {
   assert.throws(
-    () => createRequest({ ...validInput, requester: "", equipment: " " }),
+    () => createRequest({ ...validInput, requester: "", equipment: " ", priority: "" }),
     (error) => {
       assert.ok(error instanceof RequestValidationError);
-      assert.deepEqual(Object.keys(error.errors), ["requester", "equipment"]);
+      assert.deepEqual(Object.keys(error.errors), ["requester", "equipment", "priority"]);
       return true;
     },
   );
@@ -83,4 +85,20 @@ test("loadRequests safely handles damaged stored data", () => {
   storage.setItem(STORAGE_KEY, "not-json");
 
   assert.deepEqual(loadRequests(storage), []);
+});
+
+test("loadRequests keeps existing requests without a priority", () => {
+  const storage = new MemoryStorage();
+  const legacyRequest = {
+    id: "request-legacy",
+    requester: "Jordan Lee",
+    department: "Operations",
+    equipment: "Laptop",
+    neededBy: "2026-09-15",
+    reason: "Replace a failed field computer.",
+    createdAt: "2026-08-17T12:00:00.000Z",
+  };
+  storage.setItem(STORAGE_KEY, JSON.stringify([legacyRequest]));
+
+  assert.deepEqual(loadRequests(storage), [legacyRequest]);
 });
